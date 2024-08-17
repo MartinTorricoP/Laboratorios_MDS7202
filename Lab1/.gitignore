@@ -1,6 +1,9 @@
 # Ignorar todos los archivos .txt
 *.txt
 
+# Incluir 171.txt en la carpeta 
+!texts/171.txt
+
 # Ignorar todos los archivos que terminan en -mp4
 *.mp4
 
