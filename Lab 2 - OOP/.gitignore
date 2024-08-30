@@ -1,0 +1,28 @@
+# Python
+*.pyc
+__pycache__/
+*.pyo
+*.pyd
+
+# MCA specific
+/app/
+/logs/
+/database/
+
+# IDE/Editor specific
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Dependency directories
+venv/
+env/
+env.bak/
+env1/
+env2/
+node_modules/
+
+# Custom for Lab2MDS
+images_lab/
+secuencia_plaza/
