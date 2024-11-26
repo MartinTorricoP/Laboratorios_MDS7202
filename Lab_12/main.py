@@ -1,5 +1,3 @@
-# Archivo main.py
-
 from fastapi import FastAPI, HTTPException, Body
 from pydantic import BaseModel
 import pickle

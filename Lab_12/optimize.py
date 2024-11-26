@@ -1,5 +1,3 @@
-# Contenido de Optimize.py
-
 import os
 import pickle
 import xgboost as xgb
@@ -124,9 +122,6 @@ def optimize_model(learning_rate_values):
         # Registrar el archivo en MLflow
         mlflow.log_artifact(f"plots/optimization_history_lr_{learning_rate}_.png")
 
-
-
-
         # Devolver y guardar el mejor modelo para este experimento
         experiment_id = mlflow.get_experiment_by_name(experiment_name).experiment_id
         best_model = get_best_model(experiment_id)
@@ -240,7 +235,6 @@ if __name__ == "__main__":
         ax.set_xlabel("Parameter", fontsize=12)
         plt.xticks(rotation=45, ha="right")
         plt.tight_layout()
-        
         
         plt.savefig("plots/best_model_configurations.png")
         mlflow.log_artifact("plots/best_model_configurations.png")
