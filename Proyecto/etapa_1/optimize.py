@@ -181,6 +181,10 @@ def optimize_model(n_estimators_values):
     # Ajustar y transformar el conjunto de entrenamiento (X_train, y_train)
     X_train_res, y_train_res = smote.fit_resample(X_train, y_train)
     
+    # Tomar una muestra aleatoria del 10% de los datos balanceados
+    X_train_res_sampled = X_train_res.sample(frac=0.1, random_state=42)
+    y_train_res_sampled = y_train_res[X_train_res_sampled.index]
+    
     
     for n_estimators in n_estimators_values:
         # Configurar experimento de MLflow para este gamma
@@ -199,19 +203,19 @@ def optimize_model(n_estimators_values):
             param_grid = {
                 'n_estimators': n_estimators,
                 'max_depth': trial.suggest_int('max_depth', 3, 20),  # Profundidad máxima de los árboles
-                'learning_rate': trial.suggest_float('learning_rate', 0.01, 0.3),  # Tasa de aprendizaje
+                'learning_rate': trial.suggest_float('learning_rate', 0.01, 1),  # Tasa de aprendizaje
                 'subsample': trial.suggest_float('subsample', 0.5, 1.0),  # Fracción de muestras para cada árbol
-                'colsample_bytree': trial.suggest_float('colsample_bytree', 0.5, 1.0),  # Fracción de características por árbol
-                'gamma': trial.suggest_float('gamma', 0, 20),  # Término de regularización para los nodos
-                'reg_alpha': trial.suggest_float('reg_alpha', 0, 10),  # Regularización L1
-                'reg_lambda': trial.suggest_float('reg_lambda', 0, 10),  # Regularización L2
+                'colsample_bytree': trial.suggest_float('colsample_bytree', 0.25, 1.0),  # Fracción de características por árbol
+                'gamma': trial.suggest_float('gamma', 0.001, 2),  # Término de regularización para los nodos
+                'reg_alpha': trial.suggest_float('reg_alpha', 0.001, 2),  # Regularización L1
+                'reg_lambda': trial.suggest_float('reg_lambda', 5, 15),  # Regularización L2
             }
 
             # Crear el modelo con los hiperparámetros sugeridos
             model = xgb.XGBClassifier(**param_grid, random_state=42)
             
             # Entrenar el modelo
-            model.fit(X_train_res, y_train_res)
+            model.fit(X_train_res_sampled, y_train_res_sampled)
             
             # Realizar predicciones
             y_pred = model.predict(X_test)
