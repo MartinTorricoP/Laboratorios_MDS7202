@@ -77,7 +77,7 @@ def optimize_model_with_optuna(
         artifact_name = f"prediction_vs_real_{type(best_trial)}.png"
         temp_file = f"temp_{artifact_name}"
         fig.write_image(temp_file)
-        log_artifact_to_mlflow(temp_file, artifact_path="plots")
+        mlflow.log_artifact(temp_file, artifact_path="plots")
         os.remove(temp_file)
 
         print("Estudio de Optuna registrado en MLFlow.")
