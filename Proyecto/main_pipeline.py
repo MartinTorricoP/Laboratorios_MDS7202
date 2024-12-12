@@ -31,9 +31,11 @@ raw_path= "data/raw/2024-12-6-X.parquet"
 processed_path = "data/processed/clean_data.csv"
 path_y = "data/raw/2024-12-6-y.parquet"
 
+experiment_name = "BCI Riesgo"
+
 def main():
     # 1. Configurar MLFlow
-    configure_mlflow("Credit Risk Analysis")
+    configure_mlflow(experiment_name)
 
     # 2. Cargar datos
     check_or_create_processed_data(raw_path, processed_path)
@@ -103,7 +105,7 @@ def main():
 
     print("Cargando el mejor modelo desde MLFlow...")
     best_model, best_run_id = load_best_model_by_metric(
-        experiment_name="Credit Risk Analysis",
+        experiment_name=experiment_name,
         metric_name="f1_score",
         maximize=True
     )

@@ -3,6 +3,7 @@ import mlflow.sklearn
 from sklearn.metrics import f1_score, accuracy_score
 from mlflow.models import infer_signature
 import time
+import json
 
 def log_model_with_mlflow(
     model,
@@ -46,6 +47,10 @@ def log_model_with_mlflow(
         signature = infer_signature(X_train, y_pred)
 
         # Registrar el modelo
+        with open("columns.json", "w") as f:
+            json.dump(list(X_train.columns), f)
+        mlflow.log_artifact("columns.json", artifact_path="model_metadata")
+
         input_example = X_train.iloc[[0]]
         mlflow.sklearn.log_model(sk_model=model,
                                  artifact_path="model",
