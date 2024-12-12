@@ -24,14 +24,19 @@ from src.utils.check_data import check_or_create_processed_data
 from src.utils.params import get_param_distributions
 from src.utils.predict import get_predictions
 
+from src.mlflow_tracking.interpretability import log_shap_interpretation
+
 warnings.filterwarnings("ignore", category=FutureWarning)
 warnings.filterwarnings("ignore", category=UserWarning)
 
-raw_path= "data/raw/2024-12-6-X.parquet"
-processed_path = "data/processed/clean_data.csv"
-path_y = "data/raw/2024-12-6-y.parquet"
+# modificar path raw 
+raw_path= "data/raw/X_t2.parquet"
+path_y = "data/raw/y_t2.parquet"
 
-experiment_name = "BCI Riesgo"
+processed_path = "data/processed/clean_data.csv"
+
+experiment_name = "BCI Riesgo2"
+n_trials = 2
 
 def main():
     # 1. Configurar MLFlow
@@ -124,7 +129,7 @@ def main():
         y_train=y_train,
         X_test=X_test,
         y_test=y_test,
-        n_trials=2
+        n_trials=n_trials,
     )
 
     # 6. Entrenar el mejor modelo optimizado y registrarlo
@@ -143,7 +148,9 @@ def main():
     )
 
     # 8. Realizar predicciones con el mejor modelo
+    model_name = type(model_optimized).__name__
     get_predictions(model_optimized, X_test, y_test)
+    log_shap_interpretation(model_name=model_name, dataset=df)
     print("Pipeline completado con éxito.")
 
 if __name__ == "__main__":
