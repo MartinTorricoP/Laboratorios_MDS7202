@@ -16,6 +16,7 @@ def log_shap_interpretation(model_name, dataset):
         dataset_path (str): Ruta al dataset utilizado para interpretabilidad.
     """
     # Cargar el modelo desde MLFlow
+    seed = 123
     model = mlflow.sklearn.load_model(f"models:/{model_name}/latest")
 
     # Inicializar el explainer SHAP basado en el tipo de modelo

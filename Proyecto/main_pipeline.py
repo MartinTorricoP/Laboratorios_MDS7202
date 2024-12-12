@@ -150,6 +150,8 @@ def main():
     # 8. Realizar predicciones con el mejor modelo
     model_name = type(model_optimized).__name__
     get_predictions(model_optimized, X_test, y_test)
+
+    print("Interpretando el modelo con SHAP...")
     log_shap_interpretation(model_name=model_name, dataset=df)
     print("Pipeline completado con éxito.")
 
