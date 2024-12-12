@@ -1,1 +1,13 @@
 mlflow
+apache-airflow
+requests
+scikit-learn
+shap
+pandas
+scipy
+xgboost
+lightgbm
+imblearn
+optuna
+plotly
+kaleido
