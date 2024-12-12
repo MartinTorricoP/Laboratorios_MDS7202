@@ -58,7 +58,7 @@ def optimize_model_with_optuna(
     study = optuna.create_study(direction='maximize')
     study.optimize(objective, n_trials=n_trials)  
 
-    with mlflow.start_run(run_name=f"{model_class.__name__} Optimization"):
+    with mlflow.start_run(run_name=f"{str(model_class)} Optimization"):
         # Mejor trial
         best_trial = study.best_trial
 
