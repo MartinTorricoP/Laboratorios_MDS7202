@@ -3,6 +3,7 @@ import mlflow
 from sklearn.pipeline import Pipeline
 from sklearn.model_selection import cross_val_score
 from sklearn.metrics import f1_score
+import json
 
 from sklearn.ensemble import RandomForestClassifier
 from lightgbm import LGBMClassifier
@@ -65,6 +66,9 @@ def optimize_model_with_optuna(
         # Registrar hiperparámetros y métrica
         mlflow.log_params(best_trial.params)
         mlflow.log_metric("best_value", best_trial.value)
+        with open("columns.json", "w") as f:
+            json.dump(list(X_train.columns), f)
+        mlflow.log_artifact("columns.json", artifact_path="model_metadata")
 
         # Registrar gráfico de optimización como artefacto
         #fig = optuna.visualization.matplotlib.plot_optimization_history(study)
