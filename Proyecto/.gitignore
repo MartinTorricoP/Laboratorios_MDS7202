@@ -1,0 +1,16 @@
+# Python
+*.pyc
+__pycache__/
+venv/
+*.env
+
+# Docker
+.dockerignore
+docker-compose.yml
+docker-compose.override.yml
+.env
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
