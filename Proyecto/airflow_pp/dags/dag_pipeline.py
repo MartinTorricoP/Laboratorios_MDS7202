@@ -79,7 +79,8 @@ with DAG(
         task_id='retrain_model',
         python_callable=retrain,
     )
-
+    # TODO: add predict
+    
     # Tarea 5: Interpretabilidad con SHAP
     def interpret():
         log_shap_interpretation(
