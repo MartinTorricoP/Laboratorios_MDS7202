@@ -19,7 +19,7 @@ def optimize_model_with_optuna(
     y_train, 
     X_test, 
     y_test, 
-    n_trials=10, 
+    n_trials,
     metric=f1_score
 ):
     """
@@ -67,9 +67,9 @@ def optimize_model_with_optuna(
         mlflow.log_metric("best_value", best_trial.value)
 
         # Registrar gráfico de optimización como artefacto
-        fig = optuna.visualization.matplotlib.plot_optimization_history(study)
-        fig.savefig("artifacts/optuna_history.png")
-        mlflow.log_artifact("artifacts/optuna_history.png")
+        #fig = optuna.visualization.matplotlib.plot_optimization_history(study)
+        #fig.savefig("artifacts/optuna_history.png")
+        #mlflow.log_artifact(fig)
 
         print("Estudio de Optuna registrado en MLFlow.")
 

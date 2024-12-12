@@ -122,7 +122,7 @@ def main():
         y_train=y_train,
         X_test=X_test,
         y_test=y_test,
-        n_trials=20
+        n_trials=2
     )
 
     # 6. Entrenar el mejor modelo optimizado y registrarlo
@@ -137,8 +137,7 @@ def main():
         y_test=y_test,
         run_name="Optimized Model",
         params=best_params,
-        register_model=True,
-        model_name="CreditRiskModel"
+        register_model=True
     )
 
     # 8. Realizar predicciones con el mejor modelo

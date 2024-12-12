@@ -13,7 +13,6 @@ def log_model_with_mlflow(
     run_name,
     params,
     register_model=False,
-    model_name=None,
 ):
     """
     Registra el modelo, métricas y parámetros en MLFlow. Opcionalmente, registra el modelo en el Model Registry.
@@ -25,7 +24,6 @@ def log_model_with_mlflow(
         run_name (str): Nombre del run en MLFlow.
         params (dict): Hiperparámetros del modelo.
         register_model (bool): Si True, registra el modelo en el Model Registry.
-        model_name (str): Nombre del modelo en el Model Registry (necesario si register_model es True).
     """
     with mlflow.start_run(run_name=run_name):
         start_time = time.time()
@@ -44,11 +42,20 @@ def log_model_with_mlflow(
         mlflow.log_metric("f1_score", f1)
         mlflow.log_metric("elapsed_time", elapsed_time)
 
+        y_pred = model.predict(X_test)
+        signature = infer_signature(X_train, y_pred)
+
         # Registrar el modelo
         input_example = X_train.iloc[[0]]
-        mlflow.sklearn.log_model(model, "model", input_example=input_example)
+        mlflow.sklearn.log_model(sk_model=model,
+                                 artifact_path="model",
+                                 input_example=input_example,
+                                 registered_model_name=f"{type(model).__name__}_model",
+                                 signature=signature,
+                                 )
 
         print(f"Modelo registrado en MLFlow: {mlflow.active_run().info.run_id}")
+        model_name = type(model).__name__
 
         # Registrar en el Model Registry si se especifica
         if register_model:
