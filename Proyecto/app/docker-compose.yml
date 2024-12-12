@@ -1,0 +1,24 @@
+version: "3.8"
+
+services:
+  backend:
+    build:
+      context: ./backend
+    ports:
+      - "8000:8000"
+    container_name: backend
+    environment:
+      - MLFLOW_TRACKING_URI=http://host.docker.internal:5000
+      - ARTIFACTS_PATH=/app/mlruns
+    # cambiar por ID del experimento en mlruns
+    volumes:
+      - ./mlruns:/app/mlruns/ # carpeta mlruns para guardar experimentos en contenedeor
+
+  frontend:
+    build:
+      context: ./frontend
+    ports:
+      - "7860:7860"
+    container_name: frontend
+    depends_on:
+      - backend
