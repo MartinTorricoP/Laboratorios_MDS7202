@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 
 def log_data_drift(reference_data: pd.DataFrame, new_data: pd.DataFrame, experiment_name: str):
     """
-    Calcula y registra data drift en MLFlow usando Kolmogorov-Smirnov.
+    Calcula y registra data drift en MLFlow usando Kolmogorov-Smirnov
 
     Args:
         reference_data (pd.DataFrame): Datos de referencia.

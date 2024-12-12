@@ -1,7 +1,8 @@
 import mlflow
 import mlflow.sklearn
-from sklearn.metrics import f1_score, accuracy_score
+from sklearn.metrics import f1_score, accuracy_score, precision_recall_curve, auc
 from mlflow.models import infer_signature
+import numpy as np
 import time
 import json
 
@@ -30,20 +31,26 @@ def log_model_with_mlflow(
         start_time = time.time()
         # Entrenar el modelo
         model.fit(X_train, y_train)
-
         # Predicciones y métricas
         y_pred = model.predict(X_test)
+
         elapsed_time = time.time() - start_time
         accuracy = accuracy_score(y_test, y_pred)
         f1 = f1_score(y_test, y_pred)
+        precision, recall, thresholds = precision_recall_curve(y_test, y_pred)
+        auc_pr = auc(recall, precision)
+        metrics = {
+            "elapsed_time": float(elapsed_time),
+            "accuracy": float(accuracy),
+            "precision": float(np.mean(precision)),
+            "recall": float(np.mean(recall)),
+            "f1_score": float(f1),
+            "auc_pr": float(auc_pr)
+        }
 
         # Registrar parámetros y métricas
+        mlflow.log_metrics(metrics)
         mlflow.log_params(params)
-        mlflow.log_metric("accuracy", accuracy)
-        mlflow.log_metric("f1_score", f1)
-        mlflow.log_metric("elapsed_time", elapsed_time)
-
-        y_pred = model.predict(X_test)
         signature = infer_signature(X_train, y_pred)
 
         # Registrar el modelo

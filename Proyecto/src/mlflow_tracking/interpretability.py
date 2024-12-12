@@ -7,7 +7,7 @@ from sklearn.ensemble import RandomForestClassifier
 from xgboost import XGBClassifier
 from lightgbm import LGBMClassifier
 
-def log_shap_interpretation(model_name, dataset_path):
+def log_shap_interpretation(model_name, dataset):
     """
     Genera y registra explicaciones SHAP para el modelo registrado en MLFlow.
 
@@ -17,9 +17,6 @@ def log_shap_interpretation(model_name, dataset_path):
     """
     # Cargar el modelo desde MLFlow
     model = mlflow.sklearn.load_model(f"models:/{model_name}/latest")
-
-    # Cargar el dataset
-    dataset = pd.read_csv(dataset_path)
 
     # Inicializar el explainer SHAP basado en el tipo de modelo
     explainer = None
@@ -35,6 +32,7 @@ def log_shap_interpretation(model_name, dataset_path):
     # Generar valores de SHAP
     shap_values = explainer.shap_values(dataset)
 
+    # TODO: add more plots and feature importance
     # Crear gráficos de SHAP
     shap.summary_plot(shap_values, dataset, show=False)
     plt.tight_layout()

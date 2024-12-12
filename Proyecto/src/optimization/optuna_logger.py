@@ -4,6 +4,7 @@ from sklearn.pipeline import Pipeline
 from sklearn.model_selection import cross_val_score
 from sklearn.metrics import f1_score
 import json
+import os
 
 from sklearn.ensemble import RandomForestClassifier
 from lightgbm import LGBMClassifier
@@ -11,6 +12,8 @@ from xgboost import XGBClassifier
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.linear_model import LogisticRegression
 from sklearn.neighbors import KNeighborsClassifier
+from optuna.visualization import plot_param_importances
+from src.mlflow_tracking.artifact_logger import log_artifact_to_mlflow
 
 
 def optimize_model_with_optuna(
@@ -70,10 +73,12 @@ def optimize_model_with_optuna(
             json.dump(list(X_train.columns), f)
         mlflow.log_artifact("columns.json", artifact_path="model_metadata")
 
-        # Registrar gráfico de optimización como artefacto
-        #fig = optuna.visualization.matplotlib.plot_optimization_history(study)
-        #fig.savefig("artifacts/optuna_history.png")
-        #mlflow.log_artifact(fig)
+        fig = plot_param_importances(study)
+        artifact_name = f"prediction_vs_real_{type(best_trial)}.png"
+        temp_file = f"temp_{artifact_name}"
+        fig.write_image(temp_file)
+        mlflow.log_artifact(temp_file, artifact_path="plots")
+        os.remove(temp_file)
 
         print("Estudio de Optuna registrado en MLFlow.")
 

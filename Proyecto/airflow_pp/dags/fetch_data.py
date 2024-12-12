@@ -40,7 +40,7 @@ def fetch_latest_files_from_gitlab(repo_url, branch_name, token, target_folder, 
                     last_commit_date = commits[0]["committed_date"]
                     files_with_dates.append({"path": file_path, "date": last_commit_date})
 
-    # Ordenar archivos por fecha (más recientes primero)
+    # Ordenar archivos por fecha 
     sorted_files = sorted(files_with_dates, key=lambda x: x["date"], reverse=True)
 
     # Descargar los archivos más recientes

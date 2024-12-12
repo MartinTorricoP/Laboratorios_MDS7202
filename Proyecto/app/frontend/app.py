@@ -12,6 +12,7 @@ def predict_csv(file):
 
 # Función para predicción manual
 def predict_manual(feature_1, feature_2):
+    
     data = {"feature_1": feature_1, "feature_2": feature_2}
     response = requests.post(f"{BACKEND_URL}/predict_manual", json=data)
     return response.json()["prediction"]
