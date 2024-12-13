@@ -93,7 +93,7 @@ def main():
         'Decision Tree': DecisionTreeClassifier(random_state=seed),
         'Random Forest': RandomForestClassifier(random_state=seed),
         'LightGBM': LGBMClassifier(random_state=seed),
-        'XGBoost': XGBClassifier(random_state=seed)
+        'XGBoost': XGBClassifier(random_state=seed),
     }
 
     # Iterar sobre los modelos y evaluar los pipelines
